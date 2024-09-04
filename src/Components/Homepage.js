@@ -9,7 +9,7 @@ function Homepage({LOGIN,token,updateToken,searchData,updateSearch}) {
   useEffect(()=>{
     if(searchData){
     setArtists(searchData.artists.items)
-  }},[updateSearch])
+  }},[updateSearch,searchData])
   
    
 
@@ -17,6 +17,7 @@ function Homepage({LOGIN,token,updateToken,searchData,updateSearch}) {
     const logout = () => {
         updateToken("")
         window.localStorage.removeItem("token")
+        
     }
 
   
@@ -47,7 +48,7 @@ function Homepage({LOGIN,token,updateToken,searchData,updateSearch}) {
                 : <h2>Please login</h2>
             }
 
-            {artists? renderArtists(): "lol"}
+            {token? renderArtists():<></>}
             {console.log(artists)}
         </header>
     </div>

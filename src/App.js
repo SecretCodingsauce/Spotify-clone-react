@@ -21,6 +21,8 @@ function App() {
         searchKey: ""
     })
 
+    
+
     const updateSearch=(lol)=>{
         setSearch((prev)=>({...prev,
             searchKey:lol,
@@ -54,8 +56,7 @@ function App() {
 
 
   useEffect(()=>{
-    console.log("effect ran")
-    let data=""
+
      axios.get("https://api.spotify.com/v1/search", {
         headers: {
             Authorization: `Bearer ${token}`
@@ -69,11 +70,11 @@ function App() {
     .then((res)=>{setSearchData(res.data)})
     .catch(err=>console.error(err))
     
-  },[search])
+  },[search,token])
     const router=createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<NavLayout token={token}/>}>
-                <Route path="/" element={<Homepage token={token} updateToken={updateToken} searchData={searchData} updateSearch={updateSearch} LOGIN={LOGIN}/>}/>
+                <Route path="/" element={<Homepage token={token} updateToken={updateToken} searchData={searchData} updateSearch={updateSearch}  LOGIN={LOGIN}/>}/>
             </Route>
         )
     )
