@@ -3,5 +3,14 @@
 @tailwind utilities;
 
 .icon{
-    @apply w-10
+    @apply w-10 rounded-full
+}
+
+#nav{
+    z-index: 1000;
+    padding-inline: 20px;
+}
+
+.main{
+    margin-top: 4%;
 }
