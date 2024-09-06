@@ -11,6 +11,68 @@
     padding-inline: 20px;
 }
 
-.main{
+.main-lol{
+   
+    height: auto;
     margin-top: 4%;
+    margin-inline: 25px;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(21, 20, 20, 0.144);
+    font-weight:500;
+}
+
+.main{
+    height: auto;
+    margin-top: 4%;
+    margin-inline: 25px;
+    text-align: left;
+    background: linear-gradient(to bottom, #2f2f2f, #000);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 15px rgba(0, 255, 0, 0.6); /* More pronounced green shadow */
+    border: 2px solid rgba(34, 139, 34, 0.8); /* Stronger green accent border */
+    font-weight: 500;
+    color: #D4F4DD; /* Light green text color for good contrast on dark backgrounds */
+}
+
+.button {
+    background-color: #228B22; /* Green background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding around the button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-weight: 600; /* Bold text */
+    font-size: 1rem; /* Adjust the font size */
+    box-shadow: 0px 2px 4px rgba(0, 255, 0, 0.5); /* Green shadow */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+  }
+  
+  .button:hover {
+    background-color: #2E8B57; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+  }
+  
+  .button:active {
+    background-color: #1D5B1D; /* Even darker green when active */
+    transform: translateY(0); /* Reset transformation */
+  }
+
+  .playlist-cards{
+    height: 35vh;   
+    width: 30vh;
+    margin-top: 4vh;
+    margin-inline: 25px;
+    text-align: left;
+    background: linear-gradient(to bottom, #2f2f2f, #000);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 15px rgba(0, 255, 0, 0.6); /* More pronounced green shadow */
+    border: 2px solid rgba(34, 139, 34, 0.8); /* Stronger green accent border */
+    font-weight: 500;
+    color: #D4F4DD; /* Light green text color for good contrast on dark backgrounds */
 }

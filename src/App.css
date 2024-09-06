@@ -1,0 +1,13 @@
+body {
+    background-color: black;
+    color: white; /* Optional: Make the text color white for contrast */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #root{
+    height: 100%;
+    width: 100%;
+  }

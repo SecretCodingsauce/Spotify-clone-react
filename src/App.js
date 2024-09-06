@@ -13,13 +13,14 @@ function App() {
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
 
-    const LOGIN = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`
+    const LOGIN = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&scope=user-follow-read&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`
     const currentUserAddress = "https://api.spotify.com/v1/me"
 
     const [token, setToken] = useState("")
     const [userData, setUserData] = useState([])
     const [searchData, setSearchData] = useState(null)
-
+    const [userPlaylists,setUserPlaylists]=useState(null)
+    const [userFollowing, setUserFollowing]= useState(null)
     const [search, setSearch] = useState({
         searchButtonClicked: false,
         searchKey: ""
@@ -44,6 +45,7 @@ function App() {
 
     useEffect(() => {
         const hash = window.location.hash
+            console.log(hash)
         let token1 = window.localStorage.getItem("token")
 
         // getToken()
@@ -52,7 +54,7 @@ function App() {
         if (!token1 && hash) {
             token1 = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
 
-            window.location.hash = ""
+           
             window.localStorage.setItem("token", token1)
         }
 
@@ -69,6 +71,47 @@ function App() {
             .then(
                 (res) => {
                     setUserData(res.data);
+                    localStorage.setItem('followersCount', res.data.followers.total);
+                }
+            ).catch((err) => console.error(err))
+    }, [token])
+
+
+    useEffect(() => {
+        axios.get(currentUserAddress + "/playlists", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(
+                (res) => {
+                    const playlistData = res.data;
+                    
+                      setUserPlaylists(playlistData);
+                      localStorage.setItem('playlistData', playlistData); // Store in localStorage
+                   
+                
+                }
+            ).catch((err) => console.error(err))
+    }, [token])
+
+
+    useEffect(() => {
+        axios.get('https://api.spotify.com/v1/me/following', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            params: {
+                type: "artist",
+               }
+        })
+            .then(
+                (res) => {
+                    
+                    const artistsData = res.data.artists;
+                    
+                      localStorage.setItem('followedArtistsCount', artistsData); // Store in localStorage
+                      setUserFollowing(artistsData);
                 }
             ).catch((err) => console.error(err))
     }, [token])
@@ -95,7 +138,7 @@ function App() {
         createRoutesFromElements(
             <Route path="/" element={<NavLayout token={token} LOGIN={LOGIN} updateSearch={updateSearch} userData={userData} />}>
                 <Route path="/" element={<Homepage token={token} updateToken={updateToken} searchData={searchData} updateSearch={updateSearch} LOGIN={LOGIN} />} />
-                <Route path="userPage" element={<UserPage userData={userData} updateToken={updateToken} />} />
+                <Route path="userPage" element={<UserPage userData={userData} updateToken={updateToken} userPlaylists={userPlaylists} userFollowing={userFollowing}/>} />
             </Route>
         )
     )

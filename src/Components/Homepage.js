@@ -15,11 +15,7 @@ function Homepage({ LOGIN, token, updateToken, searchData }) {
 
 
 
-    const logout = () => {
-        updateToken("")
-        window.localStorage.removeItem("token")
-
-    }
+   
 
 
 
@@ -39,7 +35,7 @@ function Homepage({ LOGIN, token, updateToken, searchData }) {
 
                 {!token ?
                     <a href={LOGIN}>Login to Spotify</a>
-                    : <button onClick={logout}>Logout</button>}
+                    : <></>}
 
                 {token ?
                     <></> : <h2>Please login</h2>
