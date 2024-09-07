@@ -11,15 +11,12 @@ import SearchPage from "./Components/SearchPage";
 
 
 function App() {
-    const clientId = "2bd8f6e14bec48d69ff47a3e2e84d6cb"
-    const redirectUri = "https://spotify-clone-react-sigma.vercel.app/"
+    const CLIENT_ID = "2bd8f6e14bec48d69ff47a3e2e84d6cb"
+    const REDIRECT_URI = "http://localhost:3000"
+    const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
+    const RESPONSE_TYPE = "token"
 
-
-const scopes = ["user-read-private", "user-read-email", "user-library-read"];
-
-const LOGIN= `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes.join("%20")}`;
-
-    
+    const LOGIN = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&scope=user-follow-read&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`
     const currentUserAddress = "https://api.spotify.com/v1/me"
 
     const [token, setToken] = useState("")
@@ -59,9 +56,8 @@ const LOGIN= `https://accounts.spotify.com/authorize?client_id=${clientId}&respo
 
         if (!token1 && hash) {
             token1 = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
-
-
-            window.localStorage.setItem("token", token1)
+             window.localStorage.setItem("token", token1)
+             window.location.hash = "";
         }
 
         setToken(token1)
@@ -69,34 +65,34 @@ const LOGIN= `https://accounts.spotify.com/authorize?client_id=${clientId}&respo
     }, [])
 
     useEffect(() => {
+        if (!token) return; // Exit if token is not yet set
+    
+        // Fetch current user data
         axios.get(currentUserAddress, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-            .then(
-                (res) => {
-                    setUserData(res.data);
-                    localStorage.setItem('followersCount', res.data.followers.total);
-                }
-            ).catch((err) => console.error(err));
-
+            .then((res) => {
+                setUserData(res.data);
+                localStorage.setItem('followersCount', res.data.followers.total);
+            })
+            .catch((err) => console.error(err));
+    
+        // Fetch user playlists
         axios.get(currentUserAddress + "/playlists", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-            .then(
-                (res) => {
-                    const playlistData = res.data;
-
-                    setUserPlaylists(playlistData);
-                    localStorage.setItem('playlistData', playlistData); // Store in localStorage
-
-
-                }
-            ).catch((err) => console.error(err));
-
+            .then((res) => {
+                const playlistData = res.data;
+                setUserPlaylists(playlistData);
+                localStorage.setItem('playlistData', playlistData);
+            })
+            .catch((err) => console.error(err));
+    
+        // Fetch following artists
         axios.get('https://api.spotify.com/v1/me/following', {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -105,32 +101,29 @@ const LOGIN= `https://accounts.spotify.com/authorize?client_id=${clientId}&respo
                 type: "artist",
             }
         })
-            .then(
-                (res) => {
-
-                    const artistsData = res.data.artists;
-
-                    localStorage.setItem('followedArtistsCount', artistsData); // Store in localStorage
-                    setUserFollowing(artistsData);
+            .then((res) => {
+                const artistsData = res.data.artists;
+                localStorage.setItem('followedArtistsCount', artistsData);
+                setUserFollowing(artistsData);
+            })
+            .catch((err) => console.error(err));
+    
+        // Search for artists or tracks based on the search query
+        if (search.searchButtonClicked) {
+            axios.get("https://api.spotify.com/v1/search", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                params: {
+                    q: search.searchKey,
+                    type: "artist,track",
                 }
-            ).catch((err) => console.error(err));
-
-        axios.get("https://api.spotify.com/v1/search", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            params: {
-                q: search.searchKey,
-                type: "artist,track",
-
-            }
-        })
-            .then((res) => { setSearchData(res.data) })
-            .catch(err => console.error(err))
-
-
-
-    }, [token, search])
+            })
+                .then((res) => { setSearchData(res.data); })
+                .catch(err => console.error(err));
+        }
+    
+    }, [token, search]);
 
     const router = createBrowserRouter(
         createRoutesFromElements(
