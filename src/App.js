@@ -11,12 +11,15 @@ import SearchPage from "./Components/SearchPage";
 
 
 function App() {
-    const CLIENT_ID = "2bd8f6e14bec48d69ff47a3e2e84d6cb"
-    const REDIRECT_URI = "http://localhost:3000"
-    const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
-    const RESPONSE_TYPE = "token"
+    const clientId = "2bd8f6e14bec48d69ff47a3e2e84d6cb"
+    const redirectUri = "https://spotify-clone-react-sigma.vercel.app/"
 
-    const LOGIN = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&scope=user-follow-read&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`
+
+const scopes = ["user-read-private", "user-read-email", "user-library-read"];
+
+const LOGIN= `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes.join("%20")}`;
+
+    
     const currentUserAddress = "https://api.spotify.com/v1/me"
 
     const [token, setToken] = useState("")
