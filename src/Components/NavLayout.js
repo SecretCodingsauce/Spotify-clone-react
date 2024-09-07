@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import spotifylogo from "./img/icons8-spotify-144.png"
 import userpicture from "./img/icons8-user-white.png"
 import searchicon from "./img/icons8-magnifying-glass-50.png"

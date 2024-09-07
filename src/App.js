@@ -73,66 +73,58 @@ function App() {
                     setUserData(res.data);
                     localStorage.setItem('followersCount', res.data.followers.total);
                 }
-            ).catch((err) => console.error(err))
-    }, [token])
+            ).catch((err) => console.error(err));
 
-
-    useEffect(() => {
-        axios.get(currentUserAddress + "/playlists", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then(
-                (res) => {
-                    const playlistData = res.data;
-                    
-                      setUserPlaylists(playlistData);
-                      localStorage.setItem('playlistData', playlistData); // Store in localStorage
-                   
-                
+            axios.get(currentUserAddress + "/playlists", {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-            ).catch((err) => console.error(err))
-    }, [token])
-
-
-    useEffect(() => {
-        axios.get('https://api.spotify.com/v1/me/following', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            params: {
-                type: "artist",
-               }
-        })
-            .then(
-                (res) => {
+            })
+                .then(
+                    (res) => {
+                        const playlistData = res.data;
+                        
+                          setUserPlaylists(playlistData);
+                          localStorage.setItem('playlistData', playlistData); // Store in localStorage
+                       
                     
-                    const artistsData = res.data.artists;
-                    
-                      localStorage.setItem('followedArtistsCount', artistsData); // Store in localStorage
-                      setUserFollowing(artistsData);
-                }
-            ).catch((err) => console.error(err))
-    }, [token])
+                    }
+                ).catch((err) => console.error(err));
 
-    useEffect(() => {
+                axios.get('https://api.spotify.com/v1/me/following', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    params: {
+                        type: "artist",
+                       }
+                })
+                    .then(
+                        (res) => {
+                            
+                            const artistsData = res.data.artists;
+                            
+                              localStorage.setItem('followedArtistsCount', artistsData); // Store in localStorage
+                              setUserFollowing(artistsData);
+                        }
+                    ).catch((err) => console.error(err));
 
-        axios.get("https://api.spotify.com/v1/search", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            params: {
-                q: search.searchKey,
-                type: "artist,track",
+                    axios.get("https://api.spotify.com/v1/search", {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        },
+                        params: {
+                            q: search.searchKey,
+                            type: "artist,track",
+            
+                        }
+                    })
+                        .then((res) => { setSearchData(res.data) })
+                        .catch(err => console.error(err))
+            
 
-            }
-        })
-            .then((res) => { setSearchData(res.data) })
-            .catch(err => console.error(err))
-
-    }, [search, token])
-
+            
+    }, [toke
 
     const router = createBrowserRouter(
         createRoutesFromElements(
