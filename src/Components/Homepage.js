@@ -1,52 +1,46 @@
-import { useEffect, useState } from "react"
+import spotifylogo from "./img/spotify-blackbg-highquality.png"
+
+export default function Homepage({ LOGIN, token }) {
 
 
-function Homepage({ LOGIN, token, updateToken, searchData }) {
-
-
-    const [artists, setArtists] = useState([])
-
-    useEffect(() => {
-        if (searchData) {
-            setArtists(searchData.artists.items)
-        }
-    }, [searchData])
-
-
-
-
-   
-
-
-
-    const renderArtists = () => {
-        return artists.map(artist => (
-            <div key={artist.id}>
-                {artist.images.length ? <img width={"20%"} src={artist.images[0].url} alt="" /> : <div>No Image</div>}
-                {artist.name}
-            </div>
-        ))
-    }
 
     return (
         <div className="App">
-            <header className="main">
-                <h1 className="">Spotify React</h1>
+            {!token ? <div className="mt-8">
 
-                {!token ?
-                    <a href={LOGIN}>Login to Spotify</a>
-                    : <></>}
 
-                {token ?
-                    <></> : <h2>Please login</h2>
-                }
 
-                {token ? renderArtists() : <></>}
-                {console.log(artists)}
-            </header>
+                <div>
+                    <div className="flex flex-col justify-center items-center min-h-screen">
+                        <img className="w-56 mb-0 -mt-48" src={spotifylogo} alt="Spotify logo" />
+                        <h2 className="text-6xl font-extrabold text-center mt-0">Spotify</h2>
+                        <a className="button mt-9" href={LOGIN}>Login to Spotify</a>
+                    
+                    </div>
+
+                </div>
+
+
+
+
+
+            </div> 
+            :
+            <div>
+                <p>fuck you!</p>
+                <p>fuck you!</p>
+                <p>fuck you!</p>
+                <p>fuck you!</p>
+                <p>fuck you!</p>
+                <p>fuck you!</p>
+                <p>fuck you!</p>
+                <p>fuck you!</p>
+                <p>fuck you!</p>
+            </div>}
+
         </div>
     )
 
 }
 
-export default Homepage
+
