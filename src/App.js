@@ -12,7 +12,7 @@ import SearchPage from "./Components/SearchPage";
 
 function App() {
     const CLIENT_ID = "2bd8f6e14bec48d69ff47a3e2e84d6cb"
-    const REDIRECT_URI = "http://localhost:3000"
+    const REDIRECT_URI = "https://spotify-clone-react-sigma.vercel.app/"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
 
