@@ -12,7 +12,7 @@ import SearchPage from "./Components/SearchPage";
 
 function App() {
     const CLIENT_ID = "2bd8f6e14bec48d69ff47a3e2e84d6cb"
-    const REDIRECT_URI = "https://spotify-clone-react-sigma.vercel.app/"
+    const REDIRECT_URI = "http://localhost:3000/"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
 
@@ -24,6 +24,8 @@ function App() {
     const [searchData, setSearchData] = useState(null)
     const [userPlaylists, setUserPlaylists] = useState(null)
     const [userFollowing, setUserFollowing] = useState(null)
+    const [playlist,setPlaylist]=useState([])
+    const [artist,setArtist]=useState("")
     const [search, setSearch] = useState({
         searchButtonClicked: false,
         searchKey: ""
@@ -42,6 +44,16 @@ function App() {
 
     const updateToken = (lol) => {
         setToken(lol)
+    }
+
+    const updatePlaylist=(lol)=>{
+
+        setPlaylist(lol)
+
+    }
+
+    const updateArtist=(lol)=>{
+        setArtist(lol)
     }
 
 
@@ -109,14 +121,14 @@ function App() {
             .catch((err) => console.error(err));
     
         // Search for artists or tracks based on the search query
-        if (search.searchButtonClicked) {
+        if (search.searchButtonClicked && token) {
             axios.get("https://api.spotify.com/v1/search", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
                 params: {
                     q: search.searchKey,
-                    type: "artist,track",
+                    type: "artist,track,playlist,album",
                 }
             })
                 .then((res) => { setSearchData(res.data); })
@@ -128,11 +140,11 @@ function App() {
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<NavLayout token={token} LOGIN={LOGIN} updateSearch={updateSearch} userData={userData} />}>
-                <Route path="/" element={<Homepage token={token} updateToken={updateToken} searchData={searchData} updateSearch={updateSearch} LOGIN={LOGIN}/>} />
-                <Route path="userPage" element={<UserPage userData={userData} updateToken={updateToken} userPlaylists={userPlaylists} userFollowing={userFollowing}/>}/>
-                <Route path="playlistPage" element={<PlaylistPage/>}/>
-                <Route path="ArtistPage" element={<ArtistPage/>}/>
-                <Route path="SearchPage" element={<SearchPage token={token} searchData={searchData}/>}/>
+                <Route path="/" element={<Homepage token={token} updateToken={updateToken} searchData={searchData} updateSearch={updateSearch} LOGIN={LOGIN} updatePlaylist={updatePlaylist} updateArtist={updateArtist}/>} />
+                <Route path="userPage" element={<UserPage userData={userData} updateToken={updateToken} userPlaylists={userPlaylists} userFollowing={userFollowing} updatePlaylist={updatePlaylist} updateArtist={updateArtist}/>}/>
+                <Route path="playlistPage" element={<PlaylistPage playlist={playlist} token={token} updateArtist={updateArtist}/>}/>
+                <Route path="ArtistPage" element={<ArtistPage updatePlaylist={updatePlaylist} artist={artist} token={token}/>} />
+                <Route path="SearchPage" element={<SearchPage token={token} searchData={searchData} updatePlaylist={updatePlaylist} updateArtist={updateArtist}/>}/>
 
                 
             </Route>

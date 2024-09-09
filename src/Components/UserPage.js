@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 import userpicture from "./img/icons8-user-white.png"
 import { useEffect, useState } from "react"
 
-export default function UserPage({ userData, updateToken, userPlaylists, userFollowing, }) {
+export default function UserPage({ userData, updateToken, userPlaylists, userFollowing, updatePlaylist, updateArtist}) {
 
 
 
@@ -47,7 +47,7 @@ useEffect(()=>{
                     <h2 className="text-4xl font-bold">Public Playlists</h2>
                     <div className="flex mt-5">   
                       {playlists.map((playlist)=>(
-                        <NavLink to="/playlistPage"  className="ml-7 " key={playlist.id}>
+                        <NavLink to="/playlistPage" onClick={()=>updatePlaylist(playlist)} className="ml-7 " key={playlist.id}>
                                 <img src={playlist.images[0]?.url} alt={playlist.name} className="w-44 rounded-md" />
                                 <h2>{playlist.name}</h2>
                                 <p className="text-sm">by {playlist.owner?.display_name}</p>
@@ -58,7 +58,7 @@ useEffect(()=>{
                     <h2 className="text-4xl font-bold">Following</h2>
                     <div className="flex mt-5">   
                       {following.map((artist)=>(
-                        <NavLink to="/ArtistPage" className="ml-7 " key={artist.id}>
+                        <NavLink to="/ArtistPage" onClick={()=>updateArtist(artist.id)} className="ml-7 " key={artist.id}>
                                 <img  src={artist.images[0]?.url} alt={artist.name} className="w-44 rounded-md" />
                                 <h2>{artist.name}</h2>
                                 
